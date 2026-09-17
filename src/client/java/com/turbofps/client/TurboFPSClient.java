@@ -2,20 +2,20 @@ package com.turbofps.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.CloudStatus;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ParticleStatus;
 
-public class TurboFPSClient implements ClientModInitializer {
-    private static final String MOD_NAME = "TurboFPS";
-
+public final class TurboFPSClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(client -> applyOptimizations(client));
+        ClientLifecycleEvents.CLIENT_STARTED.register(TurboFPSClient::applyOptimizations);
     }
 
-    private static void applyOptimizations(MinecraftClient client) {
-        // Keep the mod lightweight: only safe client-side settings are changed.
-        // The player can still change these values manually at any time.
-        client.options.getCloudRenderMode().setValue(net.minecraft.client.option.CloudRenderMode.OFF);
-        client.options.getParticles().setValue(net.minecraft.client.option.ParticlesMode.DECREASED);
+    private static void applyOptimizations(Minecraft client) {
+        // Safe vanilla settings that reduce GPU/CPU work without changing gameplay.
+        client.options.cloudStatus().set(CloudStatus.OFF);
+        client.options.particles().set(ParticleStatus.MINIMAL);
+        client.options.save();
     }
 }
