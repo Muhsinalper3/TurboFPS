@@ -30,26 +30,25 @@ jobs:
       - name: Build production JAR
         run: gradle build --no-daemon --stacktrace
 
-      - name: Find production JAR
-        id: jar
+      - name: Prepare direct JAR
         shell: bash
         run: |
           JAR=$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-dev.jar' ! -name '*-sources.jar' | head -n 1)
           test -n "$JAR"
-          echo "path=$JAR" >> "$GITHUB_OUTPUT"
-          echo "Built: $JAR"
+          cp "$JAR" build/libs/TurboFPS.jar
+          echo "Built: build/libs/TurboFPS.jar"
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: TurboFPS-JAR
-          path: ${{ steps.jar.outputs.path }}
+          path: build/libs/TurboFPS.jar
           if-no-files-found: error
 
-      - name: Publish JAR release
+      - name: Publish direct JAR release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "build-${{ github.run_number }}"
           name: "TurboFPS build ${{ github.run_number }}"
           generate_release_notes: true
-          files: ${{ steps.jar.outputs.path }}
+          files: build/libs/TurboFPS.jar
