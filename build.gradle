@@ -42,9 +42,5 @@ java {
 }
 
 jar {
-    def projectName = project.name
-    inputs.property "projectName", projectName
-    from("LICENSE") {
-        rename { "${it}_${projectName}" }
-    }
+    archiveBaseName = "TurboFPS"
 }
