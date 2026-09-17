@@ -30,9 +30,20 @@ jobs:
       - name: Build mod
         run: gradle build --no-daemon --stacktrace
 
+      - name: Locate distributable JAR
+        shell: bash
+        run: |
+          echo "Built JAR files:"
+          find build -type f -name '*.jar' -print
+          mkdir -p dist
+          jar_file="$(find build -type f -name '*.jar' ! -name '*sources*' | head -n 1)"
+          test -n "$jar_file"
+          cp "$jar_file" dist/TurboFPS-1.0.0.jar
+          ls -lh dist/TurboFPS-1.0.0.jar
+
       - name: Upload mod JAR
         uses: actions/upload-artifact@v4
         with:
           name: TurboFPS-1.0.0-Minecraft-26.2
-          path: build/libs/TurboFPS-*.jar
+          path: dist/TurboFPS-1.0.0.jar
           if-no-files-found: error
