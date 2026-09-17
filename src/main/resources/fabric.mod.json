@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "turbofps",
+  "version": "${version}",
+  "name": "TurboFPS",
+  "description": "Lightweight client-side FPS optimization mod for Minecraft.",
+  "authors": ["Muhsinalper3"],
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.turbofps.client.TurboFPSClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
