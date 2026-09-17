@@ -43,7 +43,3 @@ java {
 jar {
     archiveBaseName = "TurboFPS"
 }
-
-sourcesJar {
-    enabled = false
-}
